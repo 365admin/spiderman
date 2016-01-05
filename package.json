@@ -1,0 +1,22 @@
+{
+  "name": "michelin-restaurants",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "colors": "^1.1.2",
+    "fs": "0.0.2",
+    "loadsh": "^4.0.0",
+    "lodash": "^3.10.1",
+    "parse": "^1.6.13",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^2.48.2",
+    "webdriverio": "^3.4.0"
+  }
+}
