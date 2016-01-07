@@ -34,8 +34,28 @@ lib.details = function (baseurl,html) {
     result.name =  $("h1").first().text();
     result.place =  $("h2").first().text();
     result.quote =  $(".quote").first().text();
-    
+  
 
+
+    result.images = [];
+    $("li").each(function (x, li, z) {
+        var img =  $(li).find("img")[0];
+        if (img){
+        var src = baseurl + img.attribs["src"]
+        result.images.push(src);
+        }
+
+    })
+
+    result.body  = "";
+   var body =  $(".quote").siblings().each(function (no,elem) {
+       
+       //console.log(no,elem.name,$(elem).text())
+       if (elem.name === 'p'){
+           result.body+='<p>' + $(elem).text() + '</p>';
+       }
+       })
+       
     $("h3:contains('On the pass')")[0].parent.children.forEach(function (elem,no) {
        //console.log(no,elem.name,$(elem).text())
        
@@ -60,18 +80,6 @@ lib.details = function (baseurl,html) {
                break;
        }
        
-    })
-    
-
-
-    result.images = [];
-    $("li").each(function (x, li, z) {
-        var img =  $(li).find("img")[0];
-        if (img){
-        var src = baseurl + img.attribs["src"]
-        result.images.push(src);
-        }
-
     })
 
     return result;
