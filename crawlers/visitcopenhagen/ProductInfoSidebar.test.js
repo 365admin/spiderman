@@ -1,6 +1,6 @@
 
 var cheerio = require('cheerio');
-var store = require('./store.js');
+var visitcopenhagen = require('./store.js');
 var fs = require('fs');
 var colors = require('colors');
 
@@ -25,10 +25,7 @@ function getContactRight(name,$){
 console.log("start".green);
 $ = cheerio.load(html);
 
-store.getContactRight("Address",$);
-store.getContactRight("Web",$);
-store.getContactRight("Email",$);
-store.getContactRight("Phone",$);
+visitcopenhagen.getContactRight("Address", $).then(function (r){console.log("result".yellow,r)})
 
 
 
