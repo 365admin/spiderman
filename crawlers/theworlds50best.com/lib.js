@@ -9,16 +9,15 @@ var lib = {};
 
 module['exports'] = lib;
 
-lib.detailsLinks = function (html) {
+lib.detailsLinks = function (baseurl,html) {
     var results = []
     $ = cheerio.load(html);
 
     var x = $(".c-4")
-    x.each(function (x, c4Div, z) {
-        var result = {}
-        result.href = $(c4Div).children().first()[0].attribs["href"];
-        if (result.href.startsWith('/list')) {
-            results.push(result)
+    x.find('a').each(function (x, a, z) {
+        var href = a.attribs["href"];
+        if (href.startsWith('/list')) {
+            results.push({href:baseurl+href})
         }
     })
     return results;
