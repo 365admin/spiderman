@@ -1,4 +1,3 @@
-
 var parse = require('parse/node.js')
 var _ = require('lodash');
 var Q = require('q')
@@ -21,8 +20,6 @@ lib.detailsLinks = function (html) {
         if (result.href.startsWith('/list')) {
             results.push(result)
         }
-
-
     })
     return results;
 }
@@ -34,22 +31,18 @@ lib.details = function (baseurl,html) {
     result.name =  $("h1").first().text();
     result.place =  $("h2").first().text();
     result.quote =  $(".quote").first().text();
-  
-
 
     result.images = [];
-    $("li").each(function (x, li, z) {
+    $("#rpc").find("li").each(function (x, li, z) {
         var img =  $(li).find("img")[0];
         if (img){
         var src = baseurl + img.attribs["src"]
         result.images.push(src);
         }
-
-    })
+   })
 
     result.body  = "";
-   var body =  $(".quote").siblings().each(function (no,elem) {
-       
+    var body =  $(".quote").siblings().each(function (no,elem) {
        //console.log(no,elem.name,$(elem).text())
        if (elem.name === 'p'){
            result.body+='<p>' + $(elem).text() + '</p>';
@@ -58,7 +51,6 @@ lib.details = function (baseurl,html) {
        
     $("h3:contains('On the pass')")[0].parent.children.forEach(function (elem,no) {
        //console.log(no,elem.name,$(elem).text())
-       
        switch (no) {
            case 0:
                result.chefImg = baseurl + elem.attribs["src"]
@@ -73,13 +65,27 @@ lib.details = function (baseurl,html) {
                result.standOutDish = $(elem).text()
                break;
            case 8:
-               result.contact = $(elem).text()
+               var lis = $(elem).find('li')
+               lis.each(function (no,elem){
+                   switch (no) {
+                       case 0:
+                           var lines = $(elem).text().split('+');
+                           result.address = lines[0];
+                           result.phoneNumber = '+' + lines[1];
+                           break;
+                      case 1:
+                           result.url = $(elem).text();
+                           break;
+                   
+                       default:
+                           break;
+                   }
+                   //console.log(no,elem.name,$(elem).text())
+               })     
                break;
-       
            default:
                break;
        }
-       
     })
 
     return result;
