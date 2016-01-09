@@ -1,33 +1,99 @@
-
-var cheerio = require('cheerio');
-var store = require('./store.js');
 var fs = require('fs');
+var lib = require('./crawlers/theworlds50best.com/lib');
+var data = require('./crawlers/theworlds50best.com/spec/data');
+var crawler = require('./crawlers');
+var async = require('async')
+var Parse = require('parse/node');
 var colors = require('colors');
+var database = require('./database');
+var argv = require('minimist')(process.argv.slice(2));
 
-html = `
-<section class="ProductBodyContent clearfix">
-      <div class="TellusMediaList"><div class="slider-t2" id="slider2"><div class="enlarge" id="slider2-enlarge"><a href="#" title="" onclick="slideembed.popup(this,'show','slider2');return false;; dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});"><span>Enlarge</span></a></div><div class="close" id="slider2-close"><a href="#" title="" id="slider2-close-lnk" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});"><span>Player stop, close</span></a></div><div class="player" id="slider2-player"><iframe src="about:blank" id="slider2-video-iframe" width="100%" height="100%" frameborder="0" border="0" scrolling="no"> </iframe></div><div class="hidden gallery-popup-title" style="display: none;">Restaurant AOC</div><div class="image autohide" id="slider2-img1" style="display: block; "><img id="slider2-img1-1" class="lazy resize-processed gallery-resize-processed resize-product-processed" typeof="foaf:Image" title="" src="http://media.tellus.no/images/?d=382&amp;p=11834&amp;t=1&amp;aw=452" style="display: inline-block;"><p id="slider2-img1-head" class="autohide"> </p><p id="slider2-img1-desc" class="autohide"> </p><div class="autohide"> </div></div><div class="image autohide" id="slider2-img2" style="display: none;"><img id="slider2-img1-2" class="lazy resize-processed gallery-resize-processed resize-product-processed" typeof="foaf:Image" title="" src="http://media.tellus.no/images/?d=382&amp;p=11835&amp;t=1&amp;aw=452" style="display: inline-block;"><p id="slider2-img2-head" class="autohide"> </p><p id="slider2-img2-desc" class="autohide"> </p><div class="autohide"> </div></div><div class="image autohide" id="slider2-img3" style="display: none;"><img id="slider2-img1-3" class="lazy resize-processed gallery-resize-processed resize-product-processed" typeof="foaf:Image" title="" src="http://media.tellus.no/images/?d=382&amp;p=11836&amp;t=1&amp;aw=452" style="display: inline-block;"><p id="slider2-img3-head" class="autohide"> </p><p id="slider2-img3-desc" class="autohide"> </p><div class="autohide"> </div></div><div class="navi display" id="slider2-navi"><div class="list" id="slider2-list"><div class="abs" id="slider2-mover"><ul><div class="hidden gallery-popup-title">Theme Article</div><li id="slider2-indi1-li" class="active"><a href="#" title="LinkDescription" class="slnk" rel="http://media.tellus.no/images/?d=382&amp;p=11834&amp;t=1" id="slider2-raw1" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});"><img id="slider2-img1-i" class="lazy resize-processed resize-product-processed" typeof="foaf:Image" alt="" src="http://media.tellus.no/images/?d=382&amp;p=11834&amp;t=1&amp;aw=0" style="display: inline;"></a><div class="indi"><div class="in resize-processed" id="slider2-indi1" style="width: 2%;"> </div></div></li><li id="slider2-indi2-li" class=""><a href="#" title="LinkDescription" class="slnk" rel="http://media.tellus.no/images/?d=382&amp;p=11835&amp;t=1" id="slider2-raw2" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});"><img id="slider2-img2-i" class="lazy resize-processed resize-product-processed" typeof="foaf:Image" alt="" src="http://media.tellus.no/images/?d=382&amp;p=11835&amp;t=1&amp;aw=0" style="display: inline;"></a><div class="indi"><div class="in resize-processed" id="slider2-indi2"> </div></div></li><li id="slider2-indi3-li" class=""><a href="#" title="LinkDescription" class="slnk" rel="http://media.tellus.no/images/?d=382&amp;p=11836&amp;t=1" id="slider2-raw3" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});"><img id="slider2-img3-i" class="lazy resize-processed resize-product-processed" typeof="foaf:Image" alt="" src="http://media.tellus.no/images/?d=382&amp;p=11836&amp;t=1&amp;aw=0" style="display: inline;"></a><div class="indi"><div class="in resize-processed" id="slider2-indi3"> </div></div></li></ul></div></div><div class="controls" id="slider2-navi"><ul><li><a href="#" title="" class="prev" id="slider2-navi-back" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});" style="opacity: 0.2;"><span>Back</span></a></li><li><a href="#" title="" class="next" id="slider2-navi-next" onclick="dataLayer.push({'eventcategory': 'Internal links', 'eventaction': 'Click', 'eventlabel': '#', 'event': 'eventga'});" style="opacity: 1;"><span>Next</span></a></li></ul></div></div></div> </div>
-      <div class="ProductCategoryList"> </div>
-      <div class="ProductTextList"><p> </p><p><strong>AOC holds&nbsp;two stars in&nbsp;Guide Michelin Nordic Cities 2015, and is&nbsp;located in central Copenhagen</strong>.</p>
-<p>Their aim is to give you the ultimate sensory experience, through stimulating as many senses as possible – sight, smell, sound and taste.</p>
-<p>The cuisine is based on Nordic produce, and the focus of chef Søren Selin&nbsp;is on&nbsp;the pure taste. The restaurant offers four to seven course set menus.</p>
-<p>It is also possible to experience what they term, a Sensory evening, where everything is included into a&nbsp;seven or 10 course menu. Naturally, accompanying wine menus are available.</p>
-<p><strong>Pure and simple</strong></p>
-<p>It is a fairly petite restaurant, seating about 40 people in one service. The interior decor is simple, clean and personal, with uncomplicated table settings, soft rugs on the floor and unobtrusive art covering the walls.</p><p></p> </div>
-      <div class="ProductScheduleList"><table><tbody><tr><th colspan="3">Opening hours</th></tr><tr><td class="daysOfWeek">Tuesday - Saturday</td><td class="hours">18:00 - 00:30</td><td class="dates">01/01/2015  - 31/12/2020 </td></tr></tbody></table> </div>
-      <div class="TellusDbOwner">
-        <h3>Last updated by</h3>
-        <span class="TellusDbOwnerName">Wonderful Copenhagen</span>
-        <span class="TellusDbOwnerEmail">
-          <a href="mailto:redaktion@woco.dk" onclick="dataLayer.push({'eventcategory': 'Email', 'eventaction': 'redaktion@woco.dk','event': 'eventga'});">redaktion@woco.dk</a>
-        </span>
-      </div>
-    </section>`
+console.log("Initilizing")
 
-console.log("start".green);
-$ = cheerio.load(html);
+database.run(process.env.SPIDERMANUSER, process.env.SPIDERMANPWD,function (){
+        var CrawlUrls = Parse.Object.extend('CrawlUrls');
+        var query = new Parse.Query(CrawlUrls);
+        query.equalTo('status','crawl');
+        query.first({
+            success: function (crawlUrl) {
+                if (crawlUrl){
+                    var url = crawlUrl.get('url')
+                    var key = crawlUrl.get('key')
+                    console.log("Ready to crawl".green,url)
+                    crawlUrl.set('status', 'crawling')
+                    crawlUrl.save(null, {
+                    success: function (crawlUrl) {
+                        // Execute any logic that should take place after the object is saved.
+                        console.log("crawling ",url.inverse);
+                        crawler.getPage(url).then (function (result) {
+                            var json = {};
+                            crawlUrl.set('status', 'parsed')
+                
+                            switch (key) {
+                                case 'detailsLinks':
+                                    var detailsLinks =  lib.detailsLinks(data.baseurl,result.html);
+                                    json = JSON.stringify(detailsLinks);        
+                                    detailsLinks.forEach(function (url){
+                                        var newUrl = new CrawlUrls();
+                                        newUrl.set('url', url.href)
+                                        newUrl.set('status', 'crawl')
+                                        newUrl.set('key', 'details')
+                                        newUrl.save(null,{
+                                                            success: function (invitation) {
+                                                                // Execute any logic that should take place after the object is saved.
+                                                                console.log('New object created with objectId: ' + invitation.id);
+                                                                
 
-var x= store.getProductText($);
+                                                            },
+                                                            error: function (invitation, error) {
+                                                                // Execute any logic that should take place if the save fails.
+                                                                // error is a Parse.Error with an error code and message.
+                                                                console.log('Failed to create new object, with error code: ' + error.message);
+                                                                
+                                                            }
+                                                          }    
+                                    )
+                                    })
+                                    break;
+                                case 'details':
+                                    var details =  lib.details(data.baseurl,result.html);
+                                    json = JSON.stringify(details);        
+                                    break;
+                            
+                                default:
+                                    break;
+                            }
+                            
+                            crawlUrl.set('json',json);
+                            crawlUrl.save(null, {
+                            success: function (crawlUrl) {
+                                console.log("html saved");
+                                database.done();
+                                console.log("Exiting");
+                                process.exit(0);
+                                                    },
+                            error: function (crawlUrl, error) {
+                                console.log("Failed : " + error.message);
+                            }
+                        });
+                    })},
+                    error: function (crawlUrl, error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        console.log("Failed : " + error.message);
+                    }
+                });}
+                else
+                {
+                        console.log("nothing to crawl ");
+                        database.done();
+                        console.log("Exiting ");
+                        process.exit(0);
+                }
+            },
+            error: function (error) {
+                console.log(error.message.yellow,error)
+            }
+        });
 
-
-console.log("done".green);       
+})
