@@ -10,6 +10,7 @@ var crawl = {};
 module['exports'] = crawl;
 
 crawl.getPage = function (url) {
+    console.log("Loading Page ".green,url)
     var deferred = Q.defer();
     var result = {};
     client
@@ -17,6 +18,7 @@ crawl.getPage = function (url) {
         .url(url)
         .saveScreenshot('./latest.png')
         .getSource().then(function (html) {
+            console.log("Page loaded ".green)
             fs.writeFile("./latest.html", html)
             result.html = html;    
             deferred.resolve(result);

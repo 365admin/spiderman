@@ -10,6 +10,8 @@ var lib = {};
 module['exports'] = lib;
 
 lib.detailsLinks = function (baseurl,html) {
+    console.log("Extracting list of url's ".green)
+
     var results = []
     $ = cheerio.load(html);
 
@@ -24,13 +26,14 @@ lib.detailsLinks = function (baseurl,html) {
 }
 
 lib.details = function (baseurl,html) {
+    console.log("Extracting details ".green)
     var result = {}
     $ = cheerio.load(html);
 
     result.name =  $("h1").first().text();
     result.place =  $("h2").first().text();
     result.quote =  $(".quote").first().text();
-
+    result.placement =  $(".ho").first().text();
     result.images = [];
     $("#rpc").find("li").each(function (x, li, z) {
         var img =  $(li).find("img")[0];
