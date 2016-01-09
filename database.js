@@ -27,11 +27,11 @@ database.run = function (username,password,callback) {
     Parse.initialize(process.env.SPIDERMANAPPID, process.env.SPIDERMANAPPKEY);
     Parse.User.logIn(username,password, {
         success: function (user) {
-            console.log("Connected to database as ".green, user);
+            console.log("Connected to database as ".green, user.get('username').inverse);
             callback();
         },
         error: function (error) {
-            console.log(error.message.red, error);
+            console.log("Cannot logon as ",username, error);
             process.exit(1);
         }
     })
