@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites>
-<testsuite name="Getting details of a restaurant" errors="0" tests="1" failures="0" time="0.007" timestamp="2016-01-08T06:09:31">
-  <testcase classname="Getting details of a restaurant" name="should get data on a restaurant " time="0.001"></testcase>
-</testsuite>
-</testsuites>

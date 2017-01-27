@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites>
-<testsuite name="Getting index of restaurants" errors="0" tests="1" failures="0" time="0.002" timestamp="2016-01-08T06:09:31">
-  <testcase classname="Getting index of restaurants" name="should get link to 50 restaurants " time="0"></testcase>
-</testsuite>
-</testsuites>
