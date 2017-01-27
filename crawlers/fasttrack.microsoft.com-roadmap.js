@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var Q = require('q')
 var cheerio = require('cheerio');
 var fs = require('fs');
@@ -43,51 +42,70 @@ lib.details = function(baseurl, html) {
 
     result.body = "";
     result.featureGroups = [];
-    var body = $(".feature-group__status-label").each(function(no, elem) {
-            //console.log(no,elem.name,$(elem).text())
-            //if (elem.name === 'p') {
-            result.featureGroups.push($(elem).text());
-            //}
-        })
-        /*
-            $("h3:contains('On the pass')")[0].parent.children.forEach(function(elem, no) {
-                //console.log(no,elem.name,$(elem).text())
-                switch (no) {
-                    case 0:
-                        result.chefImg = baseurl + elem.attribs["src"]
-                        break;
-                    case 2:
-                        result.onThePass = $(elem).text()
-                        break;
-                    case 4:
-                        result.styleOfFood = $(elem).text()
-                        break;
-                    case 6:
-                        result.standOutDish = $(elem).text()
-                        break;
-                    case 8:
-                        var lis = $(elem).find('li')
-                        lis.each(function(no, elem) {
-                            switch (no) {
-                                case 0:
-                                    var lines = $(elem).text().split('+');
-                                    result.address = lines[0];
-                                    result.phoneNumber = '+' + lines[1];
-                                    break;
-                                case 1:
-                                    result.url = $(elem).text();
-                                    break;
+    result.featureItems = [];
+    $(".feature-group__status-label").each(function(no, elem) {
+        //console.log(no,elem.name,$(elem).text())
+        //if (elem.name === 'p') {
+        result.featureGroups.push($(elem).text());
+        //}
+    })
+    $(".feature-item").each(function(no, elem) {
+        //console.log(no,elem.name,$(elem).text())
+        //if (elem.name === 'p') {
+        var item = {}
+        item.text = $(elem).find(".feature-item__title-text").first().text();
+        item.parent = $(elem).parent("a").text();
+        item.id = $(elem).attr("id")
 
-                                default:
-                                    break;
-                            }
-                            //console.log(no,elem.name,$(elem).text())
-                        })
-                        break;
-                    default:
-                        break;
-                }
-            })
-        */
+        item.tags = [];
+        item.body = $(elem).find(".feature-item__description ").first().text();
+        $(elem).find(".feature-item__tag > a").each(function(no2, elem2) {
+            item.tags.push($(elem2).text())
+        });
+        result.featureItems.push(item);
+        //}
+    })
+
+
+    /*
+        $("h3:contains('On the pass')")[0].parent.children.forEach(function(elem, no) {
+            //console.log(no,elem.name,$(elem).text())
+            switch (no) {
+                case 0:
+                    result.chefImg = baseurl + elem.attribs["src"]
+                    break;
+                case 2:
+                    result.onThePass = $(elem).text()
+                    break;
+                case 4:
+                    result.styleOfFood = $(elem).text()
+                    break;
+                case 6:
+                    result.standOutDish = $(elem).text()
+                    break;
+                case 8:
+                    var lis = $(elem).find('li')
+                    lis.each(function(no, elem) {
+                        switch (no) {
+                            case 0:
+                                var lines = $(elem).text().split('+');
+                                result.address = lines[0];
+                                result.phoneNumber = '+' + lines[1];
+                                break;
+                            case 1:
+                                result.url = $(elem).text();
+                                break;
+
+                            default:
+                                break;
+                        }
+                        //console.log(no,elem.name,$(elem).text())
+                    })
+                    break;
+                default:
+                    break;
+            }
+        })
+    */
     return result;
 }
