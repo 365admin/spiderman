@@ -1,0 +1,25 @@
+{
+    "name": "365admin-spiderman",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jasmine-node crawlers/theworlds50best.com/spec"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cheerio": "^0.19.0",
+        "colors": "^1.1.2",
+        "fs": "0.0.2",
+        "lodash": "^3.10.1",
+        "minimist": "^1.2.0",
+        "parse": "^1.6.13",
+        "q": "^1.4.1",
+        "selenium": "^2.20.0",
+        "selenium-html-js-converter": "^0.3.1",
+        "selenium-webdriver": "^2.48.2",
+        "wd-sync": "^1.2.5",
+        "webdriverio": "^3.4.0"
+    }
+}
