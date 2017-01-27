@@ -3,6 +3,7 @@
 Tool for scrapping stuff our of homepages that we like to react to ...
 
 ## Installation
+
     npm install 
     npm install webdriver-manager -g
 
@@ -22,6 +23,6 @@ Then in another
 
 ## Todo
 
-[ ] General JSON file with the essence of https://fasttrack.microsoft.com/roadmap
+[x] General JSON file with the essence of (https://fasttrack.microsoft.com/roadmap)
 
 
