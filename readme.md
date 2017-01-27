@@ -22,6 +22,6 @@ Then in another
 
 ## Todo
 
-[ ] Item x
+[ ] General JSON file with the essence of https://fasttrack.microsoft.com/roadmap
 
 
