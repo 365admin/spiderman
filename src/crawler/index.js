@@ -34,7 +34,7 @@ crawl.getPage = function(url) {
 crawl.getTestHtml = function(path) {
     log('getTestHtml("%s")', path);
     var deferred = Q.defer();
-    var html = fs.readFileSync(path).toString();;
+    var html = fs.readFileSync(path).toString();
     deferred.resolve(html);
     return deferred.promise;
 

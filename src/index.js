@@ -18,13 +18,15 @@ var Backend = require("./backend");
 var fs = require('fs');
 var debug = require('debug');
 var log = debug('app:log');
+var path = require('path');
+
 log.log = console.log.bind(console);
 var error = debug('app:error');
 
 function runPromise(p) {
     return p
         .then(function() {
-            process.exit(0);
+            //process.exit(0);
         }, function(err) {
             log('');
             if (program.debug || process.env.DEBUG) console.log(err.stack || '');
@@ -49,15 +51,15 @@ program
         runPromise(
             Crawler.getPage(url)
             .then(function(html) {
-                var path = ".\\temp\\latest.html";
-                fs.writeFileSync(path, html);
-                log('Page crawled and stored in "%s"', path);
-                process.exit(0);
-            }, function(err) {
-                error(err);
+                    var filePath = path.resolve(__dirname, "..\\temp\\latest.html");
+                    fs.writeFileSync(filePath, html);
+                    log('Page crawled and stored in "%s"', filePath);
+                    process.exit(0);
+                },
+                function(err) {
+                    error(err);
 
-            })
-        );
+                }));
     });
 
 program
@@ -65,16 +67,26 @@ program
     .description('Parse crawled content')
     .action(function() {
         log("Parsing");
-        var pathHtml = ".\\temp\\latest.html";
-        var pathJson = ".\\temp\\latest.json";
+        var pathHtml = path.resolve(__dirname, "..\\temp\\latest.html");
+        var pathJson = path.resolve(__dirname, "..\\temp\\latest.json");
+
         var html = fs.readFileSync(pathHtml).toString();
         runPromise(
             Crawler.getRoadmap(html)
             .then(function(details) {
                 fs.writeFileSync(pathJson, JSON.stringify(details));
-                Backend.updateCache("365roadmap", JSON.stringify(details));
                 log('Page parsed and stored in "%s"', pathJson);
-                process.exit(0);
+                Backend
+                    .updateCache("365roadmap", JSON.stringify(details))
+                    .then(function(status) {
+                            log(status);
+                            //process.exit(0);
+                        },
+                        function(err) {
+                            error(err);
+                            //process.exit(0);
+                        });
+
             }, function(err) {
                 error(err);
             })
@@ -88,10 +100,10 @@ program
         log("Syncronizing");
 
         runPromise(
-            Backend.updateCache("365roadmap", "123")
-            .then(function() {
+            Backend.readCache("365roadmap")
+            .then(function(cache) {
 
-                log('Backend updated');
+                log('Backend read');
                 process.exit(0);
             }, function(err) {
                 error(err);

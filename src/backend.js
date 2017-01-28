@@ -18,8 +18,17 @@ backend.readCache = function(tag) {
                 return deferred.resolve(null);
             } else {
                 var cache = res.data[0];
-                var buffer = cache;
-                return deferred.resolve(cache);
+                if (!cache) { return deferred.resolve(null); }
+                if (!cache.obj) { return deferred.resolve(null); }
+                if (!cache.obj.buffer) { return deferred.resolve(null); }
+
+
+                var buf = Buffer.from(cache.obj.buffer, 'base64').toString();
+
+
+                var cacheData = JSON.parse(buf);
+
+                return deferred.resolve(cacheData);
             }
         });
     return deferred.promise;
@@ -32,20 +41,23 @@ backend.updateCache = function(tag, data) {
         tag: tag
     };
     var buffer = Buffer.from(data);
-
+    var bufferText = buffer.toString('base64');
+    var obj = { buffer: bufferText };
     Stamplay.Object("spiderman_cache")
         .get(query, function(err, res) {
             if (err) return deferred.reject(err);
             if (res.data.length === 0) {
                 Stamplay.Object("spiderman_cache")
-                    .save({ "tag": tag, "buffer": buffer.toString('base64') },
+                    .save({ "tag": tag, "obj": obj },
                         function(err, res) {
                             if (err) return deferred.reject(err);
                             return deferred.resolve("added " + res);
                         });
 
             } else {
-                var updateData = { "buffer": buffer.toString('base64') };
+                var updateData = {
+                    "obj": obj
+                };
                 var instanceId = res.data[0]._id;
                 Stamplay.Object("spiderman_cache")
                     .update(instanceId,
