@@ -33,11 +33,12 @@ or
 
 ## Todo
 
-[x] Generate JSON file with the essence of (https://fasttrack.microsoft.com/roadmap)
-[x] Cache data in backend
-[x] Add comparing
-[x] Add Mocha test
-[x] Add backend initialization 
+- [x] Generate JSON file with the essence of (https://fasttrack.microsoft.com/roadmap)
+- [x] Cache data in backend
+- [x] Add comparing
+- [x] Add Mocha test
+- [x] Add backend initialization 
+- [ ] Make it "Fire and forgetable"
 
 
 

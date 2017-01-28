@@ -30,6 +30,7 @@ lib.details = function(baseurl, html) {
         item.recentlyUpdated = $(elem).attr("data-is-recently-updated");
         item.recentlyAdded = $(elem).attr("data-recently-added");
         item.statusWithId = $(elem).find(".feature-item__content").first().attr("id");
+        item.moreInfo = $(elem).find(".feature-item__more-info > a").first().attr("href");
 
         item.tags = [];
         item.body = $(elem).find(".feature-item__description").first().text();

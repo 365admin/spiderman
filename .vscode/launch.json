@@ -10,7 +10,7 @@
             "program": "${workspaceRoot}\\index.js",
             "cwd": "${workspaceRoot}",
             "args": [
-                "init"
+                "parse"
             ],
             "env": {
                 "DEBUG": "app"

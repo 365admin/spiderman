@@ -113,6 +113,7 @@ backend.initializeOffice365roadmap = function(featureItems) {
             statusWithId: item.statusWithId,
             status: statusCode(item.statusWithId),
             body: item.body,
+            moreInfoUrl: item.moreInfo,
             recentlyAdded: item.recentlyAdded === "True",
             recentlyUpdated: item.recentlyUpdated === "True"
         };
