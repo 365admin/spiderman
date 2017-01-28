@@ -102,8 +102,17 @@ program
         runPromise(
             Backend.readCache("365roadmap")
             .then(function(cache) {
+                log('Backend read')
 
-                log('Backend read');
+                if (cache) {
+                    log("Found cached data");
+                    if (cache.featureItems) {
+                        log("Contains %s", cache.featureItems.length);
+                    }
+                } else {
+                    log("Found NO cached data");
+
+                }
                 process.exit(0);
             }, function(err) {
                 error(err);

@@ -22,7 +22,6 @@ backend.readCache = function(tag) {
                 if (!cache.obj) { return deferred.resolve(null); }
                 if (!cache.obj.buffer) { return deferred.resolve(null); }
 
-
                 var buf = Buffer.from(cache.obj.buffer, 'base64').toString();
 
 
