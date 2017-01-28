@@ -1,6 +1,9 @@
 var Q = require("q");
 var stamplay = require("stamplay");
 var Stamplay = new stamplay("365admin", "a3ab2a6ca92239c035b7fa33da2ec969c542188185de3676015f23b75dd04cda");
+var debug = require('debug');
+var log = debug('app:log');
+log.log = console.log.bind(console);
 
 var backend = {};
 module['exports'] = backend;
@@ -33,8 +36,8 @@ backend.readCache = function(tag) {
     return deferred.promise;
 };
 
-
 backend.updateCache = function(tag, data) {
+
     var deferred = Q.defer();
     var query = {
         tag: tag
@@ -67,5 +70,35 @@ backend.updateCache = function(tag, data) {
                         });
             }
         });
+    return deferred.promise;
+};
+
+backend.initializeOffice365roadmap = function(featureItems) {
+    log("initializeOffice365roadmap");
+    var deferred = Q.defer();
+    var counter = featureItems.length;
+
+    featureItems.each(function(item) {
+        log('Creating "%s"', item.title)
+        var object = {
+            roadmapId: item.id,
+            tags: item.tags,
+            title: item.title,
+            statusWithId: item.statusWithId,
+            body: item.body,
+            recentlyAdded: item.recentlyAdded,
+            recentlyUpdated: item.recentlyUpdated
+        };
+
+        Stamplay.Object("office_365_roadmap")
+            .save(object,
+                function(err) {
+                    if (err) return deferred.reject(err);
+                    counter -= 1;
+                    if (counter <= 0) {
+                        return deferred.resolve("created  " + featureItems.length);
+                    }
+                });
+    });
     return deferred.promise;
 };

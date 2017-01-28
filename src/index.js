@@ -121,6 +121,24 @@ program
         );
     });
 
+program
+    .command('init')
+    .description('Initialize')
+    .action(function() {
+        log("Initializing");
+        var data = require("../temp/latest.json");
+
+        runPromise(
+            Backend.initializeOffice365roadmap(data)
+            .then(function(status) {
+                log('Backend initialized "%s"', status);
+                process.exit(0);
+            }, function(err) {
+                error(err);
+            })
+        );
+    });
+
 if (_.isEmpty(program.parse(process.argv).args) && process.argv.length === 2) {
     program.help();
 }

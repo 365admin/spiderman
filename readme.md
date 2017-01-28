@@ -6,6 +6,7 @@ Tool for scrapping stuff our of homepages that we like to react to ...
 
     npm install 
     npm install webdriver-manager -g
+    npm install mocha -g
 
 ## Execution
 
@@ -24,7 +25,7 @@ or
 
 ## Verbose logging
 
-    SET DEBUG=*
+    SET DEBUG=app
 
 ## Version history
 
@@ -34,5 +35,8 @@ or
 
 [x] General JSON file with the essence of (https://fasttrack.microsoft.com/roadmap)
 [x] Cache data in backend
+[x] Added comparing
+[x] Added Mocha test
+
 
 
