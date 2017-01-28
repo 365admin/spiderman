@@ -15,6 +15,7 @@ var program = require('commander');
 var pkg = require('../package.json');
 var Crawler = require("./crawler");
 var Backend = require("./backend");
+var Comparer = require("./comparer");
 var fs = require('fs');
 var debug = require('debug');
 var log = debug('app:log');
@@ -102,12 +103,12 @@ program
         runPromise(
             Backend.readCache("365roadmap")
             .then(function(cache) {
-                log('Backend read')
+                log('Backend read');
 
                 if (cache) {
                     log("Found cached data");
                     if (cache.featureItems) {
-                        log("Contains %s", cache.featureItems.length);
+                        log("Contains %s feature Items", cache.featureItems.length);
                     }
                 } else {
                     log("Found NO cached data");

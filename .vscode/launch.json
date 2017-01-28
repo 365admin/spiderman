@@ -10,10 +10,10 @@
             "program": "${workspaceRoot}\\index.js",
             "cwd": "${workspaceRoot}",
             "args": [
-                "sync"
+                "crawl"
             ],
             "env": {
-                "DEBUG": "*"
+                "DEBUG": "app"
             }
         },
         {

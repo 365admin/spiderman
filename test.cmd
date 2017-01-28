@@ -1,0 +1,1 @@
+mocha -w --watch-extensions json

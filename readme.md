@@ -33,5 +33,6 @@ or
 ## Todo
 
 [x] General JSON file with the essence of (https://fasttrack.microsoft.com/roadmap)
+[x] Cache data in backend
 
 
