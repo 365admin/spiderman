@@ -10,8 +10,11 @@
             "program": "${workspaceRoot}\\index.js",
             "cwd": "${workspaceRoot}",
             "args": [
-                "run"
-            ]
+                "parse"
+            ],
+            "env": {
+                "DEBUG": "*"
+            }
         },
         {
             "type": "node",

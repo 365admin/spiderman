@@ -15,7 +15,16 @@ In a console windows run
 
 Then in another
 
-    node ./index.js
+    node ./index.js crawl
+
+or
+
+    node ./index.js parse
+
+
+## Verbose logging
+
+    SET DEBUG=*
 
 ## Version history
 
