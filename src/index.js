@@ -129,7 +129,7 @@ program
         var data = require("../temp/latest.json");
 
         runPromise(
-            Backend.initializeOffice365roadmap(data)
+            Backend.initializeOffice365roadmap(data.featureItems)
             .then(function(status) {
                 log('Backend initialized "%s"', status);
                 process.exit(0);

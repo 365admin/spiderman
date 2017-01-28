@@ -73,21 +73,48 @@ backend.updateCache = function(tag, data) {
     return deferred.promise;
 };
 
+function statusCode(statusWithId) {
+    var text = ""
+    switch (statusWithId[0]) {
+        case "P":
+            text = "Previously Released";
+            break;
+        case "C":
+            text = "Cancelled";
+            break;
+        case "I":
+            text = "In Development";
+            break;
+        case "R":
+            text = "Rolling Out";
+            break;
+        case "L":
+            text = "Launched";
+            break;
+        default:
+            break;
+    }
+
+    return text;
+
+}
+
 backend.initializeOffice365roadmap = function(featureItems) {
     log("initializeOffice365roadmap");
     var deferred = Q.defer();
     var counter = featureItems.length;
 
-    featureItems.each(function(item) {
-        log('Creating "%s"', item.title)
+    featureItems.forEach(function(item) {
+        log('Creating "%s"', item.text);
         var object = {
             roadmapId: item.id,
             tags: item.tags,
-            title: item.title,
+            title: item.text,
             statusWithId: item.statusWithId,
+            status: statusCode(item.statusWithId),
             body: item.body,
-            recentlyAdded: item.recentlyAdded,
-            recentlyUpdated: item.recentlyUpdated
+            recentlyAdded: item.recentlyAdded === "True",
+            recentlyUpdated: item.recentlyUpdated === "True"
         };
 
         Stamplay.Object("office_365_roadmap")
