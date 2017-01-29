@@ -38,6 +38,10 @@ or
 - [x] Add comparing
 - [x] Add Mocha test
 - [x] Add backend initialization 
+- [ ] Export to Excel
+- [ ] Find out how to setup a proper temp location for Mocha tests
+- [ ] Export to filesystem
+- [ ] Distribute to GIT
 - [ ] Make it "Fire and forgetable"
 
 
