@@ -15,6 +15,7 @@ var program = require('commander');
 var pkg = require('../package.json');
 var Crawler = require("./crawler");
 var Backend = require("./backend");
+var Reporter = require("./reporter");
 var Comparer = require("./comparer");
 var fs = require('fs');
 var debug = require('debug');
@@ -139,6 +140,23 @@ program
         );
     });
 
+program
+    .command('excel')
+    .description('Excel')
+    .action(function() {
+        log("Initializing");
+        var data = require("../temp/latest.json");
+        var excelFilePath = path.resolve(__dirname, "..\\temp\\latest.xslx");
+        runPromise(
+            Reporter.createExcelReport(excelFilePath, data.featureItems)
+            .then(function() {
+                log('Excel created');
+                process.exit(0);
+            }, function(err) {
+                error(err);
+            })
+        );
+    });
 if (_.isEmpty(program.parse(process.argv).args) && process.argv.length === 2) {
     program.help();
 }

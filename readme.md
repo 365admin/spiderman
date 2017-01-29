@@ -1,6 +1,10 @@
-#365admin Spiderman
+# 365admin Spiderman
 
 Tool for scrapping stuff our of homepages that we like to react to ...
+
+Check out the [blog](https://blog.hexatown.com/how-do-we-hexaheads-know-whats-happening-in-office365-21f3162d3fa4).
+
+![](./spiderman.jpg)
 
 ## Installation
 
@@ -14,16 +18,16 @@ In a console windows run
 
     webdriver-manager start
 
-Then in another
+Then in another run the following sequence
 
-    node ./index.js crawl
-
-or
-
+    node ./index.js crawl 
     node ./index.js parse
+    node ./index.js excel
 
+Which will create a **HTML file** and a screenshot in a **PNG Image** , then a **JSON file**, then an **Excel document** and store those in the temp subfolder
 
 ## Verbose logging
+If you like to track what is going on under the hood set the environment variable DEBUG first
 
     SET DEBUG=app
 
