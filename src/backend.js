@@ -2,6 +2,7 @@ var Q = require("q");
 var stamplay = require("stamplay");
 var Stamplay = new stamplay("365admin", "a3ab2a6ca92239c035b7fa33da2ec969c542188185de3676015f23b75dd04cda");
 var debug = require('debug');
+var Util = require("./util");
 var log = debug('app:log');
 log.log = console.log.bind(console);
 
@@ -73,31 +74,6 @@ backend.updateCache = function(tag, data) {
     return deferred.promise;
 };
 
-function statusCode(statusWithId) {
-    var text = ""
-    switch (statusWithId[0]) {
-        case "P":
-            text = "Previously Released";
-            break;
-        case "C":
-            text = "Cancelled";
-            break;
-        case "I":
-            text = "In Development";
-            break;
-        case "R":
-            text = "Rolling Out";
-            break;
-        case "L":
-            text = "Launched";
-            break;
-        default:
-            break;
-    }
-
-    return text;
-
-}
 
 backend.initializeOffice365roadmap = function(featureItems) {
     log("initializeOffice365roadmap");
@@ -111,7 +87,7 @@ backend.initializeOffice365roadmap = function(featureItems) {
             tags: item.tags,
             title: item.text,
             statusWithId: item.statusWithId,
-            status: statusCode(item.statusWithId),
+            status: Util.statusCode(item.statusWithId),
             body: item.body,
             moreInfoUrl: item.moreInfo,
             recentlyAdded: item.recentlyAdded === "True",

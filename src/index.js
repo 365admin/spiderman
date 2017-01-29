@@ -30,7 +30,9 @@ function runPromise(p) {
         .then(function() {
             //process.exit(0);
         }, function(err) {
-            log('');
+            console.log(err);
+            error(err);
+            log(err);
             if (program.debug || process.env.DEBUG) console.log(err.stack || '');
             process.exit(1);
         });
@@ -146,7 +148,7 @@ program
     .action(function() {
         log("Initializing");
         var data = require("../temp/latest.json");
-        var excelFilePath = path.resolve(__dirname, "..\\temp\\latest.xslx");
+        var excelFilePath = path.resolve(__dirname, "..\\temp\\latest.xlsx");
         runPromise(
             Reporter.createExcelReport(excelFilePath, data.featureItems)
             .then(function() {

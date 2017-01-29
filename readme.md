@@ -41,12 +41,37 @@ If you like to track what is going on under the hood set the environment variabl
 - [x] Cache data in backend
 - [x] Add comparing
 - [x] Add Mocha test
-- [x] Add backend initialization 
-- [ ] Export to Excel
+- [x] Export to database
+- [x] Export to Excel [Kudo](https://github.com/guyonroche/exceljs) 
 - [ ] Find out how to setup a proper temp location for Mocha tests
 - [ ] Export to filesystem
 - [ ] Distribute to GIT
 - [ ] Make it "Fire and forgetable"
+
+
+
+# Reference
+
+### Cell Object
+>[Source](https://github.com/SheetJS/js-xlsx/edit/master/README.md)
+
+| Key | Description |
+| --- | ----------- |
+| `v` | raw value (see Data Types section for more info) |
+| `w` | formatted text (if applicable) |
+| `t` | cell type: `b` Boolean, `n` Number, `e` error, `s` String, `d` Date |
+| `f` | cell formula (if applicable) |
+| `r` | rich text encoding (if applicable) |
+| `h` | HTML rendering of the rich text (if applicable) |
+| `c` | comments associated with the cell ** |
+| `z` | number format string associated with the cell (if requested) |
+| `l` | cell hyperlink object (.Target holds link, .tooltip is tooltip) |
+| `s` | the style/theme of the cell (if applicable) |
+
+Built-in export utilities (such as the CSV exporter) will use the `w` text if it
+is available.  To change a value, be sure to delete `cell.w` (or set it to
+`undefined`) before attempting to export.  The utilities will regenerate the `w`
+text from the number format (`cell.z`) and the raw value if possible.
 
 
 
